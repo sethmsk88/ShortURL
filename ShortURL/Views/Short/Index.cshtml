@@ -1,0 +1,20 @@
+﻿@model UrlDto
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <form asp-controller="Short" asp-action="CreateShortUrl">
+        <input asp-for="LongUrl" />
+        <button type="submit" class="btn btn-primary">Create Short URL</button>
+    </form>
+    <div>
+        @{
+            if (Model != null)
+            {
+                <a href="@Model.ShortUrlWithDomain" target="_blank">@Model.ShortUrlWithDomain</a>
+            }
+        }
+    </div>
+</div>

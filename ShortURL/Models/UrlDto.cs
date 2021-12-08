@@ -8,5 +8,6 @@ namespace ShortURL.Models
         [Required]
         [MaxLength(2048)]
         public string LongUrl { get; set; }
+        public string ShortUrlWithDomain { get; set; }
     }
 }
