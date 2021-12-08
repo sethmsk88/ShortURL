@@ -26,7 +26,7 @@ namespace ShortURL
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContextPool<ShortURLContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ShortURLDBConnection")));
+            services.AddDbContextPool<ShortURLContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("AzureShortURLDBConnection")));
             services.AddScoped<IUrlRepository, UrlRepository>();
         }
 

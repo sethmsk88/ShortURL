@@ -63,7 +63,7 @@ namespace ShortURL.Controllers
             // Insert new url record into database
             _urlRepository.Add(url);
 
-            return Ok($"{ _config.GetValue<string>("AppDomain") }/api/short/{ url.ShortUrl }");
+            return Ok($"{ _config.GetValue<string>("AppDomain:Prod") }/api/short/{ url.ShortUrl }");
         }
 
         private string GenerateRandomUrl()
