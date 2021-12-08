@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace ShortURL.Controllers
 {
-    [Route("[controller]")]
     public class ShortController : Controller
     {
         private const string CharSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -26,6 +25,9 @@ namespace ShortURL.Controllers
         }
 
         [HttpGet]
+        public IActionResult Index() => View();
+
+        [HttpGet]
         [Route("{shortUrl}")]
         public IActionResult GetShortUrlRedirect(string shortUrl)
         {
@@ -39,9 +41,6 @@ namespace ShortURL.Controllers
 
             return Redirect(url.LongUrl);
         }
-
-        [HttpGet]
-        public IActionResult Index() => View();
 
         [HttpPost]
         public IActionResult CreateShortUrl(UrlDto urlDto)
@@ -68,7 +67,7 @@ namespace ShortURL.Controllers
             UrlDto newUrlDto = new UrlDto
             {
                 LongUrl = urlDto.LongUrl,
-                ShortUrlWithDomain = $"{ _config.GetValue<string>("AppDomain") }/Short/{ shortUrl }"
+                ShortUrlWithDomain = $"{ _config.GetValue<string>("AppDomain") }/{ shortUrl }"
             };
 
             return View("Index", newUrlDto);
