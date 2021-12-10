@@ -13,6 +13,13 @@ namespace ShortURL.Models
         
         public Url Add(Url url)
         {
+            // Prepend http:// to URL if it is missing
+            if (url.LongUrl.StartsWith("http://") == false
+                && url.LongUrl.StartsWith("https://") == false)
+            {
+                url.LongUrl = "http://" + url.LongUrl;
+            }
+
             _context.Add(url);
             _context.SaveChanges();
 
