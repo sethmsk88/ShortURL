@@ -45,6 +45,11 @@ namespace ShortURL.Controllers
         [HttpPost]
         public IActionResult CreateShortUrl(UrlDto urlDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("Index");
+            }
+            
             string shortUrl = GenerateRandomUrl();
 
             // Check if short url already exists in database
