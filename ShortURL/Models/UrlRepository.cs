@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShortURL.Models
 {
@@ -11,7 +13,7 @@ namespace ShortURL.Models
             _context = context;
         }
         
-        public Url Add(Url url)
+        public async Task<Url> Add(Url url)
         {
             // Prepend http:// to URL if it is missing
             if (url.LongUrl.StartsWith("http://") == false
@@ -20,17 +22,15 @@ namespace ShortURL.Models
                 url.LongUrl = "http://" + url.LongUrl;
             }
 
-            _context.Add(url);
-            _context.SaveChanges();
-
-            return url;
+            var result = await _context.Urls.AddAsync(url);
+            await _context.SaveChangesAsync();
+            return result.Entity;
         }
 
-        public Url Get(string shortUrl)
+        public async Task<Url> Get(string shortUrl)
         {
-            return _context.Urls
-                .Where(u => u.ShortUrl == shortUrl)
-                .FirstOrDefault();
+            return await _context.Urls
+                .FirstOrDefaultAsync(u => u.ShortUrl == shortUrl);
         }
     }
 }

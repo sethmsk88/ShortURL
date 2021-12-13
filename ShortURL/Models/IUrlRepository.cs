@@ -1,8 +1,10 @@
-﻿namespace ShortURL.Models
+﻿using System.Threading.Tasks;
+
+namespace ShortURL.Models
 {
     public interface IUrlRepository
     {
-        Url Add(Url url);
-        Url Get(string shortUrl);
+        Task<Url> Add(Url url);
+        Task<Url> Get(string shortUrl);
     }
 }

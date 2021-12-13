@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ShortURL.Models;
 using System;
@@ -29,10 +30,10 @@ namespace ShortURL.Controllers
 
         [HttpGet]
         [Route("{shortUrl}")]
-        public IActionResult GetShortUrlRedirect(string shortUrl)
+        public async Task<IActionResult> GetShortUrlRedirect(string shortUrl)
         {
             // Lookup the long url associated with the given short url
-            Url url = _urlRepository.Get(shortUrl);
+            Url url = await _urlRepository.Get(shortUrl);
 
             if (url == null)
             {
@@ -43,7 +44,7 @@ namespace ShortURL.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateShortUrl(UrlDto urlDto)
+        public async Task<IActionResult> CreateShortUrl(UrlDto urlDto)
         {
             if (!ModelState.IsValid)
             {
@@ -54,7 +55,7 @@ namespace ShortURL.Controllers
 
             // Check if short url already exists in database
             // Keep generating new ones until we have a unique short url
-            while (_urlRepository.Get(shortUrl) != null)
+            while (await _urlRepository.Get(shortUrl) != null)
             {
                 shortUrl = GenerateRandomUrl();
             }
@@ -67,7 +68,7 @@ namespace ShortURL.Controllers
             };
 
             // Insert new url record into database
-            _urlRepository.Add(url);
+            await _urlRepository.Add(url);
 
             UrlDto newUrlDto = new UrlDto
             {
@@ -93,22 +94,5 @@ namespace ShortURL.Controllers
 
             return randString;
         }
-
-        private string GenerateUniqueRandomUrl()
-        {
-            string shortUrl = GenerateRandomUrl();
-
-            // Check if short url already exists in database
-            // Keep generating new ones until we have a unique short url
-            while (_urlRepository.Get(shortUrl) != null)
-            {
-                shortUrl = GenerateRandomUrl();
-            }
-            
-            return shortUrl;
-        }
-
-
-
     }
 }
